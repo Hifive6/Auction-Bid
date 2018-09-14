@@ -1,0 +1,24 @@
+{
+  "name": "Auction-Bid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "auction.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hifive6/Auction-Bid.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hifive6/Auction-Bid/issues"
+  },
+  "homepage": "https://github.com/Hifive6/Auction-Bid#readme",
+  "dependencies": {
+    "inquirer": "^6.2.0",
+    "mysql": "^2.13.0"
+  }
+}
