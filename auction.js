@@ -11,12 +11,12 @@ var connection = mysql.createConnection({
   
   connection.connect(function(err) {
     if (err) throw err;
-    createProduct();
+    //createProduct();
     // console.log("connected as id " + connection.threadId);
     //connection.end();
   });
 
-
+function start(){
     inquirer.prompt([
     {
         type: "list",
@@ -30,16 +30,18 @@ var connection = mysql.createConnection({
     
 ]).then(function(user){
     if(user.userChoice === "Post"){
-        
-        postItem();
+        postItem()
+        //console.log("post has been chosen")
     
         
     }else{
         console.log("Bid was chosen!")
     }
-    
+  
 
 });
+}
+
 function postItem(){
     inquirer.prompt([
         {
@@ -48,21 +50,36 @@ function postItem(){
             message: "What would you like to Post?"
         }
     ])
+    .then(function(user){
+        console.log(`
+            ${"Inserted " + user.name + " as new Product\n"}`
+            
+            )
+        var query = connection.query(
+            "INSERT INTO auction SET ?",
+            {
+                name: user.name,
+                Starting_Bid: 0,
+                Updated_Bid: 0
+
+            },
+            function(err, res){
+                console.log(`
+            ${res.affectedRows + "Production inserted!\n"}
+                `);
+            }
+        );
+        console.log(`
+            ${query.sql}`)
+    })
     
 }
 
-function createProduct(){
-    console.log("Inserting a new product...\n");
-    var query = connection.query(
-        "INSERT INTO auction SET ?",
-        {
-            
-        },
-        function(err, res){
-            console.log(res.affectedRows + "product inserted!\n");
-        }
-    );
-    console.log(query.sql);
+function bidItem(){
+    inquirer.prompt([
+        
+    ])
 }
 
-  
+
+start();
