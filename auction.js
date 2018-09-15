@@ -30,12 +30,13 @@ function start(){
     
 ]).then(function(user){
     if(user.userChoice === "Post"){
-        postItem()
+        postItem();
         //console.log("post has been chosen")
     
         
     }else{
-        console.log("Bid was chosen!")
+        bidItem();
+        
     }
   
 
@@ -50,15 +51,15 @@ function postItem(){
             message: "What would you like to Post?"
         }
     ])
-    .then(function(user){
+    .then(function(item){
         console.log(`
-            ${"Inserted " + user.name + " as new Product\n"}`
+            ${"Inserted " + item.name + " as new Product\n"}`
             
             )
         var query = connection.query(
             "INSERT INTO auction SET ?",
             {
-                name: user.name,
+                name: item.name,
                 Starting_Bid: 0,
                 Updated_Bid: 0
 
@@ -76,9 +77,44 @@ function postItem(){
 }
 
 function bidItem(){
-    inquirer.prompt([
+    connection.query("SELECT * FROM auction", function(err, res){
+        if(err)throw err;
+        arrItems = [ ];
+        res.forEach(element => {
+            arrItems.push(element.id.toString());
+            
+            
+        });
         
+    })
+    inquirer.prompt([
+        {
+        type: "list",
+        name: "name",
+        message: "What would you like to bid on?",
+        choices: arrItems
+        },
+        {
+        type: "input",
+        name: "name",
+        message: "What woud you like to bid on this item?"
+        
+        }
     ])
+    .then(function(bid){
+        console.log("updated bid Price to " + bid.name + " !\n")
+        var query = connection.query(
+            "UPDATING auction SET ? WHERE ?",
+            [
+                {
+                    Updated_Bid: bid.name,
+                }
+            ],
+            function(err, res){
+                console.log(res.affectedRows + "Bid has been updated")
+            }
+        )
+    })
 }
 
 
